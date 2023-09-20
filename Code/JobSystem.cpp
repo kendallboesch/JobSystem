@@ -58,6 +58,11 @@ void JobSystem::CreateWorkerThread(const char* uniqueName, unsigned long workerJ
     m_workerThreads.back()->startUp(); 
 }
 
+void JobSystem::DestroyWorkerThread(const char *uniqueName)
+{
+    
+}
+
 void JobSystem::QueueJob(Job* job)
 {
     m_jobsQueuedMutex.lock(); 
@@ -148,7 +153,6 @@ void JobSystem::FinishJob(int jobID)
     }
 }
 
-
 void JobSystem::onJobCompleted(Job* jobJustExecuted )
 {
     totalJobs++;
@@ -172,7 +176,6 @@ void JobSystem::onJobCompleted(Job* jobJustExecuted )
     m_jobsRunningMutex.unlock(); 
     m_jobsCompletedMutex.unlock(); 
 }
-
 
 Job* JobSystem::ClaimAJob(unsigned long workerJobChannels)
 {
