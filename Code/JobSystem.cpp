@@ -88,6 +88,10 @@ JobStatus JobSystem::GetJobStatus(int jobID) const
 
     return jobStatus; 
 }
+int JobSystem::GetJobID(Job* job) 
+{
+    return job->m_jobID;
+}
 
 bool JobSystem::isJobComplete(int jobID) const
 {

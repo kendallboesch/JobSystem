@@ -50,6 +50,8 @@ class JobSystem
     // TO DO: ASK PROF ABOUT THIS CHANGE 
     void FinishCompletedJobs(); 
     void FinishJob(int jobID); 
+    int GetJobID(Job* job);
+    void GetAllJobInfo();
 
     private: 
     Job* ClaimAJob(unsigned long workerJobFlags); 
