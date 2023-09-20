@@ -3,8 +3,8 @@
 #include <mutex>
 #include <deque>
 #include <thread>
-constexpr int JOB_TYPE_ANY = -1; 
-//const int JOB_TYPE_ANY = -1;
+//constexpr int JOB_TYPE_ANY = -1; 
+const int JOB_TYPE_ANY = -1;
 
 //int JOB_TYPE_ANY = -1; 
 class JobWorkerThread; 
