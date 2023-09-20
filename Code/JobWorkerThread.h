@@ -30,11 +30,11 @@ private:
     static void WorkerThreadMain(void* workThreadObject); // start point
 
 private:
-    const char * m_uniqueName;
-    unsigned long m_workerJobChannels = 0xffffffff;
-    bool m_isStopping = false;
-    JobSystem* m_jobSystem = nullptr;
-    std::thread* m_thread = nullptr;
-    mutable std::mutex m_workerStatusMutex;
+    const char *                 m_uniqueName;
+    unsigned long                m_workerJobChannels = 0xffffffff;
+    bool                         m_isStopping = false;
+    JobSystem*                   m_jobSystem = nullptr;
+    std::thread*                 m_thread = nullptr;
+    mutable std::mutex           m_workerStatusMutex;
 
 };

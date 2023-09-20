@@ -69,9 +69,10 @@ void JobSystem::QueueJob(Job* job)
     m_jobHistoryMutex.lock();
     m_jobHistory.emplace_back(JobHistoryEntry(job->m_jobType, JOB_STATUS_QUEUED)); 
     m_jobHistoryMutex.unlock(); 
-
     m_jobsQueued.push_back(job); 
     m_jobsQueuedMutex.unlock(); 
+
+    std::cout << "Queued: " << GetJobID(job) << std::endl;
 }
 
 JobStatus JobSystem::GetJobStatus(int jobID) const 

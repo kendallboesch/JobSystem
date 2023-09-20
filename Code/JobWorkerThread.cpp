@@ -26,7 +26,7 @@ void JobWorkerThread::WorkerThreadMain(void *workerThreadObject)
 
 void JobWorkerThread::startUp()
 {
-   //  m_thread = new std::thread(JobWorkerThread::WorkerThreadMain, this); 
+    m_thread = new std::thread(JobWorkerThread::WorkerThreadMain, this); 
   // m_thread = new std::thread(&JobWorkerThread::WorkerThreadMain, this);
 
 }
