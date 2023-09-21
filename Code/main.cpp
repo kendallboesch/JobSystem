@@ -56,7 +56,7 @@ int main(void ) {
     while(running)
     {
         std::string command; 
-        std::cout << "Enter stop, destroy, finifh, statsu" << std::endl; 
+        std::cout << "Enter stop, destroy, finish, finishjob, status" << std::endl; 
         std::cin >> command; 
 
         if(command == "stop")
@@ -72,7 +72,14 @@ int main(void ) {
         }
         else if(command == "finish")
         {
-            js->FinishJob(0); 
+           js->FinishCompletedJobs(); 
+           std::cout << "Total Jobs Completed: " << js->totalJobs << std::endl; 
+
+        }
+        else if(command == "finishjob")
+        {
+            std:: cout << "Finishing Job 0" << std::endl; 
+            js->FinishJob(0);
 
         }
         else if (command == "status")
@@ -89,11 +96,3 @@ int main(void ) {
 
     return 0;
 }
-
-
-// int main()
-// {
-
-//     std::cout << "Hello World!" << std::endl;
-//     return 0; 
-// }
