@@ -32,6 +32,7 @@ JobSystem::~JobSystem()
 
 JobSystem* JobSystem::CreateOrGet()
 {
+    
     if(!s_jobSystem)
     {
         s_jobSystem = new JobSystem(); 
@@ -60,7 +61,26 @@ void JobSystem::CreateWorkerThread(const char* uniqueName, unsigned long workerJ
 
 void JobSystem::DestroyWorkerThread(const char *uniqueName)
 {
-    
+    m_workerThreadsMutex.lock(); 
+    JobWorkerThread *worker = nullptr; 
+    std::vector<JobWorkerThread*>::iterator it = m_workerThreads.begin(); 
+
+    for(; it != m_workerThreads.end(); ++it)
+    {
+        if(strcmp((*it)->m_uniqueName, uniqueName) == 0)
+        {
+            worker = *it; 
+            m_workerThreads.erase(it); 
+            break;
+        }
+    }   
+    m_workerThreadsMutex.unlock(); 
+
+    if(worker)
+    {
+        worker->shutDown(); 
+        delete worker;
+    }
 }
 
 void JobSystem::QueueJob(Job* job)
@@ -73,9 +93,11 @@ void JobSystem::QueueJob(Job* job)
     // m_jobsQueuedMutex.unlock(); 
 
     m_jobHistoryMutex.lock(); 
+     m_jobsQueuedMutex.lock(); 
+
     m_jobHistory.emplace_back(JobHistoryEntry(job->m_jobType, JOB_STATUS_QUEUED)); 
+
     m_jobHistoryMutex.unlock(); 
-    m_jobsQueuedMutex.lock(); 
     m_jobsQueued.push_back(job); 
     m_jobsQueuedMutex.unlock(); 
 
