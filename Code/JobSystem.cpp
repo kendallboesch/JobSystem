@@ -32,7 +32,7 @@ JobSystem::~JobSystem()
 
 JobSystem* JobSystem::CreateOrGet()
 {
-    
+
     if(!s_jobSystem)
     {
         s_jobSystem = new JobSystem(); 

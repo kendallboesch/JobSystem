@@ -33,7 +33,7 @@ void JobWorkerThread::startUp()
 
 void JobWorkerThread::work()
 {
-        while(!isStopping())
+    while(!isStopping())
     {
         m_workerStatusMutex.lock(); 
         unsigned long workerJobChannels = m_workerJobChannels; 
