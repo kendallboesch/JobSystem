@@ -6,7 +6,6 @@
 #include "CompileJob.h"
 
 
-
 int main(void ) {
     std::cout << "Creating Job System" << std::endl;
 
@@ -35,7 +34,7 @@ int main(void ) {
     for(int j = 0; j < 10; j++)
     {
         RenderJob* rjb = new RenderJob(0xFFFFFFFF, 1); 
-        for(int i = 0; i < 1000; i++)
+        for(int i = 0; i < 5; i++)
         {
             rjb->data.push_back(i+j); 
         }

@@ -10,8 +10,6 @@
  *
  * downside of includes in .h instead of .cpp?
  *
- * 
- *
  */
 
 
