@@ -211,6 +211,9 @@ Job* JobSystem::ClaimAJob(unsigned long workerJobChannels)
             m_jobsQueued.erase(queuedJobItr); 
             m_jobsRunning.push_back(claimedJob);
             m_jobHistory[claimedJob->m_jobID].m_jobStatus = JOB_STATUS_RUNNING;
+
+            //TODO: Check 
+            m_jobHistoryMutex.unlock(); 
             break; 
         }
     }
