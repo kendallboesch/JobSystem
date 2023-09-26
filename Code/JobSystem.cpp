@@ -85,13 +85,6 @@ void JobSystem::DestroyWorkerThread(const char *uniqueName)
 
 void JobSystem::QueueJob(Job* job)
 {
-    // m_jobsQueuedMutex.lock(); 
-    // m_jobHistoryMutex.lock();
-    // m_jobHistory.emplace_back(JobHistoryEntry(job->m_jobType, JOB_STATUS_QUEUED)); 
-    // m_jobHistoryMutex.unlock(); 
-    // m_jobsQueued.push_back(job); 
-    // m_jobsQueuedMutex.unlock(); 
-
     m_jobHistoryMutex.lock(); 
      m_jobsQueuedMutex.lock(); 
 

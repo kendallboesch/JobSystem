@@ -12,7 +12,7 @@ int main(void ) {
     JobSystem* js = JobSystem::CreateOrGet(); 
 
     std::cout << "Creating worker threads" << std::endl; 
-
+    js->CreateWorkerThread("Thread0", 0xFFFFFFFF);
     js->CreateWorkerThread("Thread1", 0xFFFFFFFF);
     js->CreateWorkerThread("Thread2", 0xFFFFFFFF);
     js->CreateWorkerThread("Thread3", 0xFFFFFFFF);
