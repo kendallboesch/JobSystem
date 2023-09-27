@@ -137,7 +137,7 @@ void JobSystem::FinishCompletedJobs()
         m_jobHistoryMutex.lock();
         m_jobHistory[job->m_jobID].m_jobStatus = JOB_STATUS_RETIRED; 
         m_jobHistoryMutex.unlock(); 
-        delete job; 
+      //  delete job; 
     }
 }
 
@@ -146,7 +146,31 @@ void JobSystem::FinishJob(int jobID)
     while(!isJobComplete(jobID))
     {
         JobStatus jobStatus = GetJobStatus(jobID);
-        if(jobStatus == JOB_STATUS_NEVER_SEEN || JOB_STATUS_RETIRED)
+        std::cout << "ID : " << jobID << " STATUS: " << jobStatus << std::endl;
+
+            switch(jobStatus)
+            {
+                case JOB_STATUS_NEVER_SEEN : 
+                    std::cout << "Never seen" << std::endl;
+                    break; 
+                case JOB_STATUS_QUEUED :
+                    std::cout << "Queued" << std::endl;
+                    break; 
+                case JOB_STATUS_RUNNING : 
+                    std::cout << "Running" << std::endl;
+                    break; 
+                case JOB_STATUS_COMPLETED : 
+                    std::cout << "Completed" << std::endl; 
+                    break; 
+                case JOB_STATUS_RETIRED : 
+                    std::cout << "Retired" << std::endl; 
+                    break;
+                case NUM_JOB_STATUSES : 
+                    std::cout << "Num stats??" << std::endl;
+                    break;
+            }
+
+        if(jobStatus == JOB_STATUS_NEVER_SEEN || jobStatus == JOB_STATUS_RETIRED)
         {
             std::cout << "ERROR: Waiting for Job(#" << jobID <<") - no such job in JobSystem" << std::endl; 
             return;

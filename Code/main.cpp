@@ -12,7 +12,7 @@ int main(void ) {
     JobSystem* js = JobSystem::CreateOrGet(); 
 
     std::cout << "Creating worker threads" << std::endl; 
-    js->CreateWorkerThread("Thread0", 0xFFFFFFFF);
+   // js->CreateWorkerThread("Thread0", 0xFFFFFFFF);
     js->CreateWorkerThread("Thread1", 0xFFFFFFFF);
     js->CreateWorkerThread("Thread2", 0xFFFFFFFF);
     js->CreateWorkerThread("Thread3", 0xFFFFFFFF);
@@ -34,7 +34,7 @@ int main(void ) {
     for(int j = 0; j < 10; j++)
     {
         RenderJob* rjb = new RenderJob(0xFFFFFFFF, 1); 
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < 1000; i++)
         {
             rjb->data.push_back(i+j); 
         }
@@ -58,6 +58,8 @@ int main(void ) {
         std::string command; 
         std::cout << "Enter stop, destroy, finish, finishjob, status" << std::endl; 
         std::cin >> command; 
+
+        std::cout << "INPUT: " << command << std::endl;
 
         if(command == "stop")
         {
@@ -84,7 +86,33 @@ int main(void ) {
         }
         else if (command == "status")
         {
-            std::cout << "Job status " << js->GetJobStatus(0) << std::endl; 
+            JobStatus stat = js->GetJobStatus(0); 
+            std::cout << "Job status " << stat << std::endl; 
+            
+            switch(stat)
+            {
+                case JOB_STATUS_NEVER_SEEN : 
+                    std::cout << "Never seen" << std::endl;
+                    break; 
+                case JOB_STATUS_QUEUED :
+                    std::cout << "Queued" << std::endl;
+                    break; 
+                case JOB_STATUS_RUNNING : 
+                    std::cout << "Running" << std::endl;
+                    break; 
+                case JOB_STATUS_COMPLETED : 
+                    std::cout << "Completed" << std::endl; 
+                    break; 
+                case JOB_STATUS_RETIRED : 
+                    std::cout << "Retired" << std::endl; 
+                    break;
+                case NUM_JOB_STATUSES : 
+                    std::cout << "Num stats??" << std::endl;
+                    break;
+
+
+            }
+
         }
         else 
         {
