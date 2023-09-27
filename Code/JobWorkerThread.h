@@ -13,11 +13,7 @@ class JobWorkerThread{
         // promising job system will be created by end???
     friend class JobSystem;     // if included job system header in here, it would do the same thing
 private:
-    /****
-     * @param uniqueName
-     * @param workerJobChannels
-     * @param jobSystem
-     */
+
     JobWorkerThread(const char* uniqueName, unsigned long workerJobChannels, JobSystem* jobSystem);
     ~JobWorkerThread();
 
