@@ -64,7 +64,8 @@ bool JobWorkerThread::isStopping() const
     bool shouldClose = m_isStopping; 
     m_workerStatusMutex.unlock(); 
 
-    return shouldClose; }
+    return shouldClose; 
+    }
 
 void JobWorkerThread::setWorkerJobChannels(unsigned long workerJobChannels)
 {

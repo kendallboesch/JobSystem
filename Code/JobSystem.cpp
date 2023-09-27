@@ -94,7 +94,7 @@ void JobSystem::QueueJob(Job* job)
     m_jobsQueued.push_back(job); 
     m_jobsQueuedMutex.unlock(); 
 
-    std::cout << "Queued: " << GetJobID(job) << std::endl;
+   // std::cout << "Queued: " << GetJobID(job) << std::endl;
 }
 
 JobStatus JobSystem::GetJobStatus(int jobID) const 
@@ -103,6 +103,7 @@ JobStatus JobSystem::GetJobStatus(int jobID) const
 
     // TODO: Check if this is correct implementation 
     JobStatus jobStatus = JOB_STATUS_NEVER_SEEN;
+    std::cout << (int) m_jobHistory.size() << "--------------------------" << std::endl;
     if(jobID, (int) m_jobHistory.size())
     {
         jobStatus = m_jobHistory[jobID].m_jobStatus;
