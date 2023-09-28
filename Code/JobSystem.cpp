@@ -4,12 +4,11 @@
 
 JobSystem* JobSystem::s_jobSystem = nullptr; 
 
-typedef void (*JobCallback) (Job* completedJob);    
+typedef void (*JobCallback)(Job* completedJob);    
 //new type called JObCallBack --> can use that to make all the code i write with function pointers way simpler; 
 
 JobSystem::JobSystem()
 {
-    //
     m_jobHistory.reserve(256 * 1024); 
 }
 JobSystem::~JobSystem()

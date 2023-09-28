@@ -16,7 +16,7 @@
 // thread will grab cide, compile it, and return the results
 void CompileJob::Execute() {
     std::array<char, 128> buffer;
-    std::string command = "make automated";
+    std::string command = "make test";
     //std::string command = "curl -s -X POST -H 'Content-type: application/json' --data "
 
     //Redirect -> redirects cerr to cout ;
