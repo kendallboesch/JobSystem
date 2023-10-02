@@ -26,7 +26,7 @@ void CompileJob::Execute() {
     command.append(" 2>&1");
 
   // basically gives me terminal to work on, but opening this terminal inside a thread
-        // everything that happens on that cout will now come back to me on this thread
+        // everything that happens on that cout will now come back to me on this threstd:ad
     //PC: open pipe and run command
     FILE* pipe = popen(command.c_str(), "r");
 

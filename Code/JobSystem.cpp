@@ -95,33 +95,45 @@ void JobSystem::QueueJob(Job* job)
 
    // std::cout << "Queued: " << GetJobID(job) << std::endl;
 }
+JobStatus JobSystem::GetJobStatus(int jobID) const{
+    m_jobHistoryMutex.lock();
 
-JobStatus JobSystem::GetJobStatus(int jobID) const 
-{
-    m_jobHistoryMutex.lock(); 
-
-    // TODO: Check if this is correct implementation 
     JobStatus jobStatus = JOB_STATUS_NEVER_SEEN;
-    std::cout << (int) m_jobHistory.size() << "--------------------------" << std::endl;
-    if(jobID, (int) m_jobHistory.size())
-    {
-        jobStatus = m_jobHistory[jobID].m_jobStatus;
+    if (jobID < (int) m_jobHistory.size()){
+        jobStatus = (JobStatus)(m_jobHistory[jobID].m_jobStatus);
     }
 
-    m_jobHistoryMutex.unlock(); 
-
-    return jobStatus; 
+    m_jobHistoryMutex.unlock();
+    return jobStatus;
 }
+// JobStatus JobSystem::GetJobStatus(int jobID) const 
+// {
+//     m_jobHistoryMutex.lock(); 
+
+//     // TODO: Check if this is correct implementation 
+//     JobStatus jobStatus = JOB_STATUS_NEVER_SEEN;
+//     std::cout << (int) m_jobHistory.size() << "--------------------------" << std::endl;
+//     if(jobID, (int) m_jobHistory.size())
+//     {
+//         jobStatus = m_jobHistory[jobID].m_jobStatus;
+//     }
+
+//     m_jobHistoryMutex.unlock(); 
+
+//     return jobStatus; 
+// }
 int JobSystem::GetJobID(Job* job) 
 {
     return job->m_jobID;
 }
 
-bool JobSystem::isJobComplete(int jobID) const
-{
-    return JobStatus (jobID) == JOB_STATUS_COMPLETED; 
+// bool JobSystem::isJobComplete(int jobID) const
+// {
+//     return GetJobStatus(jobID) == JOB_STATUS_COMPLETED; 
+// }
+bool JobSystem::isJobComplete(int jobID) const{
+    return (GetJobStatus(jobID)) == (JOB_STATUS_COMPLETED);
 }
-
 void JobSystem::FinishCompletedJobs()
 {
     std::deque<Job*> jobsCompleted; 
@@ -137,74 +149,97 @@ void JobSystem::FinishCompletedJobs()
         m_jobHistoryMutex.lock();
         m_jobHistory[job->m_jobID].m_jobStatus = JOB_STATUS_RETIRED; 
         m_jobHistoryMutex.unlock(); 
-      //  delete job; 
+        delete job; 
     }
 }
 
-void JobSystem::FinishJob(int jobID)
-{
-    while(!isJobComplete(jobID))
-    {
+// void JobSystem::FinishJob(int jobID)
+// {
+//     while(!isJobComplete(jobID))
+//     {
+//         JobStatus jobStatus = GetJobStatus(jobID);
+//         std::cout << "ID : " << jobID << " STATUS: " << jobStatus << std::endl;
+
+//         if(jobStatus == JOB_STATUS_NEVER_SEEN || jobStatus == JOB_STATUS_RETIRED)
+//         {
+//             std::cout << "ERROR: Waiting for Job(#" << jobID <<") - no such job in JobSystem" << std::endl; 
+//             return;
+//         }
+
+//         m_jobsCompletedMutex.lock(); 
+//         Job* thisCompletedJob = nullptr; 
+//         for(auto jcIter = m_jobsCompleted.begin(); jcIter != m_jobsCompleted.end(); ++jcIter)
+//         {
+//             Job* someCompletedJob = *jcIter;
+//             if(someCompletedJob->m_jobID == jobID)
+//             {
+//                 thisCompletedJob = someCompletedJob;
+//                 m_jobsCompleted.erase(jcIter);
+//                 break;
+//             }
+//         }
+//         m_jobsCompletedMutex.unlock(); 
+
+//         if(thisCompletedJob == nullptr)
+//         {
+//             std::cout << "ERROR: Job #" << jobID << " was status completed but not found in completed lisy" << std::endl;    
+//         }
+
+//         thisCompletedJob->JobCompleteCallback(); 
+
+//         m_jobHistoryMutex.lock(); 
+//         m_jobHistory[thisCompletedJob->m_jobID].m_jobStatus = JOB_STATUS_RETIRED;
+//         m_jobHistoryMutex.unlock(); 
+
+//         delete thisCompletedJob; 
+//     }
+// }
+// void JobSystem::FinishJob(int jobID)
+// {
+
+//     // The code after the while loop was within the body of the loop
+//     while(!isJobComplete(jobID)){
+//         JobStatus jobStatus = GetJobStatus(jobID);
+//         if((jobStatus == JOB_STATUS_NEVER_SEEN) || (jobStatus == JOB_STATUS_RETIRED)){
+//             std::cout << "Error: Waiting for job (# " << jobID << ") - no such job in JobSystem" << std::endl;
+//             return; 
+//         }
+//     }
+
+//     m_jobsCompletedMutex.lock();
+//     Job* thisCompletedJob = nullptr;
+//     for(auto jcIter = m_jobsCompleted.begin(); jcIter != m_jobsCompleted.end(); ++jcIter){
+//         Job* someCompletedJob = *jcIter;
+//         if(someCompletedJob->m_jobID == jobID){
+//             thisCompletedJob = someCompletedJob;
+//             m_jobsCompleted.erase(jcIter);
+//             break;
+//         }
+//     }
+// }
+void JobSystem::FinishJob(int jobID){
+
+    // The code after the while loop was within the body of the loop
+    while(!isJobComplete(jobID)){
         JobStatus jobStatus = GetJobStatus(jobID);
-        std::cout << "ID : " << jobID << " STATUS: " << jobStatus << std::endl;
-
-            switch(jobStatus)
-            {
-                case JOB_STATUS_NEVER_SEEN : 
-                    std::cout << "Never seen" << std::endl;
-                    break; 
-                case JOB_STATUS_QUEUED :
-                    std::cout << "Queued" << std::endl;
-                    break; 
-                case JOB_STATUS_RUNNING : 
-                    std::cout << "Running" << std::endl;
-                    break; 
-                case JOB_STATUS_COMPLETED : 
-                    std::cout << "Completed" << std::endl; 
-                    break; 
-                case JOB_STATUS_RETIRED : 
-                    std::cout << "Retired" << std::endl; 
-                    break;
-                case NUM_JOB_STATUSES : 
-                    std::cout << "Num stats??" << std::endl;
-                    break;
-            }
-
-        if(jobStatus == JOB_STATUS_NEVER_SEEN || jobStatus == JOB_STATUS_RETIRED)
-        {
-            std::cout << "ERROR: Waiting for Job(#" << jobID <<") - no such job in JobSystem" << std::endl; 
-            return;
+        if((jobStatus == JOB_STATUS_NEVER_SEEN) || (jobStatus == JOB_STATUS_RETIRED)){
+            std::cout << "Error: Waiting for job (# " << jobID << ") - no such job in JobSystem" << std::endl;
+            return; 
         }
+    }
 
-        m_jobsCompletedMutex.lock(); 
-        Job* thisCompletedJob = nullptr; 
-        for(auto jcIter = m_jobsCompleted.begin(); jcIter != m_jobsCompleted.end(); ++jcIter)
-        {
-            Job* someCompletedJob = *jcIter;
-            if(someCompletedJob->m_jobID == jobID)
-            {
-                thisCompletedJob = someCompletedJob;
-                m_jobsCompleted.erase(jcIter);
-                break;
-            }
+    m_jobsCompletedMutex.lock();
+    Job* thisCompletedJob = nullptr;
+    for(auto jcIter = m_jobsCompleted.begin(); jcIter != m_jobsCompleted.end(); ++jcIter){
+        Job* someCompletedJob = *jcIter;
+        if(someCompletedJob->m_jobID == jobID){
+            thisCompletedJob = someCompletedJob;
+            m_jobsCompleted.erase(jcIter);
+            break;
         }
-        m_jobsCompletedMutex.unlock(); 
-
-        if(thisCompletedJob == nullptr)
-        {
-            std::cout << "ERROR: Job #" << jobID << " was status completed but not found in completed lisy" << std::endl;    
-        }
-
-        thisCompletedJob->JobCompleteCallback(); 
-
-        m_jobHistoryMutex.lock(); 
-        m_jobHistory[thisCompletedJob->m_jobID].m_jobStatus = JOB_STATUS_RETIRED;
-        m_jobHistoryMutex.unlock(); 
-
-        delete thisCompletedJob; 
     }
 }
-
+// Rest of the code
 void JobSystem::onJobCompleted(Job* jobJustExecuted )
 {
     totalJobs++;

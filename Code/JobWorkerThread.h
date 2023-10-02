@@ -12,7 +12,7 @@ class JobWorkerThread{
     //since we dont actually create, we onlt have a pointer to jobSystem
         // promising job system will be created by end???
     friend class JobSystem;     // if included job system header in here, it would do the same thing
-private:
+public:
 
     JobWorkerThread(const char* uniqueName, unsigned long workerJobChannels, JobSystem* jobSystem);
     ~JobWorkerThread();
